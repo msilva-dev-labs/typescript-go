@@ -45,18 +45,6 @@ f.called = false;
 | Automatic typeof insertion | <pre><code>const o = { a: 1 };</code><br/><code>/\** @type {o} */</code><br/><code>var o2 = { a: 1 };</code></pre> | <pre><code>const o = { a: 1 };</code><br/><code>/\** @type {typeof o} */</code><br/><code>var o2 = { a: 1 };</code></pre> | |
 | `@typedef` nested names    | <pre><code>/** @typedef {1} NS.T */</pre></code> | Translate to .d.ts file. | Also applies to `@callback`. |
 
-## Expando declarations
-
-| Name                       | Example | Substitute  | Note |
-| -------------------------- | ------- | ----------- |----- |
-| Fallback initialisers      | <pre><code>f.x = f.x \|\| init;</pre></code> | <pre><code>if (!f.x) f.x = init;</pre></code> | |
-| Nested, undeclared expandos | <pre><code>var N = {};</code><br/><code>N.X.Y = {};</code></pre> | <pre><code>var N = {};</code><br/><code>N.X = {};</code><br/><code>N.X.Y = {};</code></pre> | All intermediate expandos have to be assigned. Closure feature. |
-| Constructor function prototype assignment | <pre><code>function C() { }</code><br><code>C.prototype.m = function() { };</code></pre> | <pre><code>class C {</code><br><code>  m() { }</code><br/><code>}</code></pre> | Use regular `class` declarations. |
-| Constructor function prototype assignment | <pre><code>function C() { }</code><br><code>C.prototype = {</code><br/>  <code>m: function() { }</code><br/><code>};</code></pre> | <pre><code>class C {</code><br><code>  m() { }</code><br/><code>}</code></pre> | Use regular `class` declarations. |
-| Identifier declarations    | <pre><code>class C {</code><br/>  <code>constructor() {</code><br/>    <code>/\** @type {T} */</code><br/>    <code>this.identifier;</code><br/>  <code>}</code><br/><code>}</code></pre> | <pre><code>class C {</code><br/>  <code>/\** @type {T} */</code><br/>  <code>identifier;</code><br/>  <code>constructor() { }</code><br/><code>}</code></pre> | Closure feature. |
-| `this` aliases             | <pre><code>class C() {</code><br/><code>  constructor() {</code><br><code>    var that = this;</code><br/><code>    that.x = 12;</code><br/><code>  }</code><br><code>}</code></pre> | <pre><code>class C() {</code><br/><code>  constructor() {</code><br><code>    this.x = 12;</code><br/><code>  }</code><br><code>}</code></pre> | |
-| `this` alias for `globalThis` | <pre><code>this.globby = true;</pre></code> | <pre><code>globalThis.globby = true;</pre></code> | When used at the top level of a script. |
-
 ## CommonJS syntax
 
 | Name                       | Example | Substitute  | Note |
